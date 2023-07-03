@@ -5,6 +5,7 @@
 
 #include <QApplication>
 #include <QSurfaceFormat>
+#include <iostream>
 
 #include "window.h"
 using namespace std;
