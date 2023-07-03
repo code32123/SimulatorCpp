@@ -13,6 +13,9 @@ public:
 	bool shouldUpdate();
 	void loadToMemory(string bytesToLoad);
 
+	void writeIO(unsigned char address, unsigned short value);
+	void interrupt(unsigned char address);
+
 	vector<string> stringSplitter(string s);
 	string vectorDisplay(vector<string> strVec);
 	string memorySectionDisplay(int start, int length);
@@ -24,11 +27,13 @@ public:
 	string debug();
 	int T() { return t; };
 
+	bool lock;
+	bool handlingAnInterrupt;
+
 private:
 	int t;
 	unsigned short PC;
-	unsigned short RD;
-	unsigned short RV;
+	unsigned short DD;
 	unsigned short R0;
 	unsigned short R1;
 	unsigned short R2;
@@ -39,14 +44,17 @@ private:
 	unsigned short instruction;
 	int displayMode;
 
-	void getAddress();
-	void getValue();
-	void getAtAddress();
+	unsigned short getFromMemory(unsigned short address);
+	unsigned int getValue();
+	unsigned int getAtAddress();
 	void pushToStack(unsigned short stackAddress, unsigned short value);
 	unsigned short popFromStack(unsigned short stackAddress);
 
 	void setValue(unsigned short value, unsigned short address, QImage& imageRef);
 
 	QRgb convertColor(unsigned short rgb565, int mode, int selector = 0);
+
+	const unsigned short functionStack = 0xe000;
+	const unsigned short registerStack = 0xf000;
 };
 #endif // CPU_H

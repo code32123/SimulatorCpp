@@ -37,7 +37,41 @@ private:
 	bool debugEveryStep;
 
 protected:
+	void keyReleaseEvent(QKeyEvent *event) override {
+		if (event->isAutoRepeat()) {
+			return;
+		}
+		if (!processor->handlingAnInterrupt) {
+			if (event->key() == Qt::Key_Left) {
+				cout << "Left^" << endl;
+				processor->writeIO(0x70, 0x25);
+				processor->writeIO(0x71, 0);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Up) {
+				cout << "Up^" << endl;
+				processor->writeIO(0x70, 0x26);
+				processor->writeIO(0x71, 0);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Right) {
+				cout << "Right^" << endl;
+				processor->writeIO(0x70, 0x27);
+				processor->writeIO(0x71, 0);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Down) {
+				cout << "Down^" << endl;
+				processor->writeIO(0x70, 0x28);
+				processor->writeIO(0x71, 0);
+				processor->interrupt(0x00);
+			}
+		}
+	}
 	void keyPressEvent(QKeyEvent *event) override {
+		if (event->isAutoRepeat()) {
+			return;
+		}
 		if (event->key() == Qt::Key_Space) {
 			cout << "Space" << endl;
 			running = false;
@@ -50,11 +84,11 @@ protected:
 				cout << processor->debug() << endl;
 			}
 		}
-		if (event->key() == Qt::Key_Q) {
-			cout << "Q" << endl;
-			forceScreenUpdate = !forceScreenUpdate;
-			cout << "Force screen refresh: " << forceScreenUpdate << endl;
-		}
+		//		if (event->key() == Qt::Key_Q) {
+		//			cout << "Q" << endl;
+		//			forceScreenUpdate = !forceScreenUpdate;
+		//			cout << "Force screen refresh: " << forceScreenUpdate << endl;
+		//		}
 		if (event->key() == Qt::Key_R) {
 			cout << "R" << endl;
 			running = true;
@@ -64,9 +98,35 @@ protected:
 			cout << "D" << endl;
 			cout << processor->debug() << endl;
 		}
-		if (event->key() == Qt::Key_W) {
-			cout << "W" << endl;
-			debugEveryStep = !debugEveryStep;
+		//		if (event->key() == Qt::Key_W) {
+		//			cout << "W" << endl;
+		//			debugEveryStep = !debugEveryStep;
+		//		}
+		if (!processor->handlingAnInterrupt) {
+			if (event->key() == Qt::Key_Left) {
+				cout << "Left" << processor->lock << endl;
+				processor->writeIO(0x70, 0x25);
+				processor->writeIO(0x71, 1);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Up) {
+				cout << "Up" << processor->lock << endl;
+				processor->writeIO(0x70, 0x26);
+				processor->writeIO(0x71, 1);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Right) {
+				cout << "Right" << processor->lock << endl;
+				processor->writeIO(0x70, 0x27);
+				processor->writeIO(0x71, 1);
+				processor->interrupt(0x00);
+			}
+			if (event->key() == Qt::Key_Down) {
+				cout << "Down" << processor->lock << endl;
+				processor->writeIO(0x70, 0x28);
+				processor->writeIO(0x71, 1);
+				processor->interrupt(0x00);
+			}
 		}
 	}
 };
