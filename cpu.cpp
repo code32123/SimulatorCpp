@@ -889,7 +889,6 @@ QRgb cpu::convertColor(unsigned short value, int mode, int selector) {
 		r = r * 0x80 + light * 0x7f;
 		g = g * 0x80 + light * 0x7f;
 		b = b * 0x80 + light * 0x7f;
-		//		cout << "(" << r << ", " << g << ", " << b << ")" << endl;
 
 		return qRgba(r, g, b, 255);
 	}

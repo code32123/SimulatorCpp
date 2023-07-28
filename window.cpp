@@ -24,7 +24,7 @@ Window::Window() {
 
 	QTimer *timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, &Window::animateOneStep);
-	timer->start(); // Change to 0 for full speeeeed!
+	timer->start(200); // Change to 0 for full speeeeed!
 
 	QTimer *fpstimer = new QTimer(this);
 	connect(fpstimer, &QTimer::timeout, this, &Window::fpsUpdate);
@@ -36,12 +36,23 @@ Window::Window() {
 	cacheFrame = 0;
 
 	processor = new cpu();
+
+	loadFile();
+	//	run();
+}
+void Window::loadFile() {
 	string cwd = "C:/Users/jimmy/Desktop/Coding/8Bit CPU/Ghost/programs/";
+	string fileName = cwd + "Snake.hex";
+	//	string fileName = cwd + "keypress.hex";
+	//	string fileName = cwd + "stringPrint/StringPrin.hex";
+	//	string fileName = cwd + "ColorModeTest.hex";
+	//	string fileName = QFileDialog::getOpenFileName(this,
+	//												   tr("Open hex file"),
+	//												   "",
+	//												   tr("Hex File (*.hex)"))
+	//						  .toStdString();
 	std::ifstream hexFile;
-	//	hexFile.open(cwd + "stringPrint/StringPrint.hex"); // 96637
-	hexFile.open(cwd + "ColorModeTest.hex");
-	//	hexFile.open(cwd + "Snake.hex");
-	//	hexFile.open(cwd + "keypress.hex");
+	hexFile.open(fileName);
 	std::string fileContents;
 	if (hexFile.is_open()) {
 		char curr_char;
@@ -54,6 +65,15 @@ Window::Window() {
 		}
 	}
 	processor->loadToMemory(fileContents);
+}
+void Window::run() {
+	QTimer *timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, &Window::animateOneStep);
+	timer->start(); // Change to 0 for full speeeeed!
+
+	QTimer *fpstimer = new QTimer(this);
+	connect(fpstimer, &QTimer::timeout, this, &Window::fpsUpdate);
+	fpstimer->start(1000);
 }
 void Window::animateOneStep() {
 	if (running) {

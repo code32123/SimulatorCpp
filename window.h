@@ -4,6 +4,7 @@
 #include "cpu.h"
 #include <QBoxLayout>
 #include <QDateTime>
+#include <QFileDialog>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QTimer>
@@ -14,12 +15,16 @@
 class QLabel;
 class QTimer;
 class QDateTime;
+class QFileDialog;
+
 using namespace std;
 
 class Window : public QWidget {
 	Q_OBJECT
 public:
 	Window();
+	void run();
+	void loadFile();
 private slots:
 	void animateOneStep();
 	void fpsUpdate();
